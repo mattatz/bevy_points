@@ -1,0 +1,31 @@
+[package]
+authors = [
+  "Masatatsu Nakamura <masatatsu.nakamura@gmail.com>",
+]
+categories = ["rendering"]
+description = "Points mesh plugin for Bevy"
+edition = "2021"
+homepage = "https://github.com/mattatz/bevy_points"
+keywords = ["bevy", "gamedev", "graphics"]
+license = "MIT"
+name = "bevy_points"
+readme = "README.md"
+repository = "https://github.com/mattatz/bevy_points"
+version = "0.1.0"
+
+[dependencies.bevy]
+default-features = false
+features = ["render", "bevy_asset"]
+version = "0.9"
+
+[dev-dependencies.bevy]
+default-features = false
+features = ["render", "bevy_asset"]
+version = "0.9"
+
+[features]
+"examples" = ["bevy/render", "bevy/bevy_winit", "bevy/x11"]
+
+[[example]]
+name = "scene"
+required-features = ["examples"]

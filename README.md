@@ -1,0 +1,66 @@
+
+# Bevy Points
+
+Points mesh plugin for Bevy.
+
+## Usage
+
+### System setup
+
+Add the plugin to your app:
+
+```rust
+use bevy::prelude::*;
+use bevy_points::prelude::*;
+
+fn main() {
+    App::new()
+        .add_plugin(PointsPlugin);
+}
+```
+
+### Apply a component to a MaterialMeshBundle
+
+```rust
+fn setup(
+    mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<PointsMaterial>>,
+) {
+    let n = 320; // # of points
+    let h = 3.0; // spiral height
+    commands.spawn(MaterialMeshBundle {
+        mesh: meshes.add(
+            PointsMesh::from_iter((0..n).map(|i| {
+                let t01 = (i as f32) / ((n - 1) as f32);
+                let r = t01 * TAU * 4.0; // spiral fineness
+                Vec3::new(r.cos(), (t01 - 0.5) * h, r.sin())
+            }))
+            .into(),
+        ),
+        material: materials.add(PointsMaterial {
+            point_size: 20.0,       // Defines the size of the points. 
+            perspective: true,      // Specify whether points' size is attenuated by the camera depth. 
+            circle: true,           // Specify whether the shape of points is circular or rectangular.
+            ..Default::default()
+        }),
+        ..Default::default()
+    });
+
+    commands.spawn(MaterialMeshBundle {
+        mesh: meshes.add(
+            // Mesh can be converted to PointsMesh.
+            PointsMesh::from(Mesh::from(shape::Icosphere::default()))
+            .into()
+        ),
+        material: materials.add(PointsMaterial {
+            color: Color::BLUE,
+            opacity: 0.5,
+            alpha_mode: AlphaMode::Blend,
+            ..Default::default()
+        }),
+        ..Default::default()
+    });
+}
+
+```
