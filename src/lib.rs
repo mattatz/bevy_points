@@ -14,4 +14,4 @@ pub mod prelude {
 }
 
 pub const SHADER_HANDLE: HandleUntyped =
-    HandleUntyped::weak_from_u64(Shader::TYPE_UUID, 17159784698352519001);
+    HandleUntyped::weak_from_u64(Shader::TYPE_UUID, 15532858032624716725);
