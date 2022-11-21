@@ -68,3 +68,9 @@ fn setup(
 }
 
 ```
+
+## Compatibility
+
+| bevy | bevy_points |
+| ---- | ------------- |
+| 0.9  | 0.1           |
