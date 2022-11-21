@@ -1,7 +1,11 @@
 
 # Bevy Points
 
+[![crates.io](https://img.shields.io/crates/v/bevy_points)](https://crates.io/crates/bevy_points)
+
 Points mesh plugin for Bevy.
+
+![Example](https://user-images.githubusercontent.com/1085910/202979410-3bc4bf60-b4af-421c-b2ab-6ac08e00f6a6.png)
 
 ## Usage
 
