@@ -18,6 +18,7 @@ pub struct PointsMaterial {
     pub color: Color,
     pub depth_bias: f32,
     pub alpha_mode: AlphaMode,
+    pub use_vertex_color: bool,
     pub perspective: bool,
     pub circle: bool,
 }
@@ -30,6 +31,7 @@ impl Default for PointsMaterial {
             color: Color::WHITE,
             depth_bias: 0.,
             alpha_mode: Default::default(),
+            use_vertex_color: true,
             perspective: true,
             circle: false,
         }
@@ -38,6 +40,7 @@ impl Default for PointsMaterial {
 
 #[derive(Clone, PartialEq, Eq, Hash)]
 pub struct PointsMaterialKey {
+    use_vertex_color: bool,
     perspective: bool,
     circle: bool,
 }
@@ -45,6 +48,7 @@ pub struct PointsMaterialKey {
 impl From<&PointsMaterial> for PointsMaterialKey {
     fn from(material: &PointsMaterial) -> Self {
         PointsMaterialKey {
+            use_vertex_color: material.use_vertex_color,
             perspective: material.perspective,
             circle: material.circle,
         }
@@ -81,11 +85,11 @@ impl Material for PointsMaterial {
             Mesh::ATTRIBUTE_POSITION.at_shader_location(0),
             Mesh::ATTRIBUTE_UV_0.at_shader_location(1),
         ];
-        if layout.contains(Mesh::ATTRIBUTE_COLOR) {
+
+        if key.bind_group_data.use_vertex_color && layout.contains(Mesh::ATTRIBUTE_COLOR) {
             shader_defs.push(String::from("VERTEX_COLORS"));
             vertex_attributes.push(Mesh::ATTRIBUTE_COLOR.at_shader_location(2));
         }
-
         if key.bind_group_data.perspective {
             shader_defs.push(String::from("POINT_SIZE_PERSPECTIVE"));
         }
