@@ -3,10 +3,8 @@ use std::f32::consts::{FRAC_PI_2, TAU};
 use bevy::{
     prelude::{
         shape, AlphaMode, App, Assets, Camera3dBundle, ClearColor, Color, Commands,
-        MaterialMeshBundle, Mesh, PerspectiveProjection, Quat, Query, Res, ResMut, Transform, Vec3,
-        With,
+        MaterialMeshBundle, Mesh, PerspectiveProjection, Quat, ResMut, Transform, Vec3,
     },
-    time::Time,
     DefaultPlugins,
 };
 use bevy_points::prelude::*;

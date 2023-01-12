@@ -10,8 +10,9 @@ struct PointMaterial {
 @group(1) @binding(0)
 var<uniform> material: PointMaterial;
 
-// NOTE: Bindings must come before functions that use them!
-#import bevy_pbr::mesh_functions
+fn mesh_position_local_to_world(model: mat4x4<f32>, vertex_position: vec4<f32>) -> vec4<f32> {
+    return model * vertex_position;
+}
 
 struct Vertex {
     @location(0) position: vec3<f32>,
@@ -40,7 +41,7 @@ fn vertex(vertex: Vertex) -> VertexOutput {
     view_position = vec4<f32>(view_position.xy - delta.xy, view_position.zw);
     let clip_position = view.projection * view_position;
 #else
-    var clip_position = mesh_position_world_to_clip(world);
+    var clip_position = view.view_proj * world;
     let r: f32 = view.viewport.z / view.viewport.w;
     let s: f32 = max(view.viewport.z, view.viewport.w);
     let w: f32 = clip_position.w / s;
