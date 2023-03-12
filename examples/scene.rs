@@ -1,13 +1,7 @@
 use std::f32::consts::{FRAC_PI_2, TAU};
 
-use bevy::{
-    prelude::{
-        shape, AlphaMode, App, Assets, Camera3dBundle, ClearColor, Color, Commands,
-        MaterialMeshBundle, Mesh, PerspectiveProjection, Quat, ResMut, Transform, Vec3,
-    },
-    DefaultPlugins,
-};
-use bevy_points::prelude::*;
+use bevy::{prelude::*, DefaultPlugins};
+use bevy_points::{material::PointsShaderSettings, prelude::*};
 
 const ORIGIN: Vec3 = Vec3::new(0.0, 0.0, -5.0);
 
@@ -26,6 +20,15 @@ fn setup(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<PointsMaterial>>,
 ) {
+    commands.spawn(PointLightBundle {
+        point_light: PointLight {
+            intensity: 3000.0,
+            ..Default::default()
+        },
+        transform: Transform::from_xyz(-3.0, 2.0, -1.0),
+        ..Default::default()
+    });
+
     let mut pt = PointsMesh::from(Mesh::from(shape::UVSphere {
         radius: 1.0,
         sectors: 36,
@@ -46,8 +49,11 @@ fn setup(
     commands.spawn(MaterialMeshBundle {
         mesh: meshes.add(pt.into()),
         material: materials.add(PointsMaterial {
-            point_size: 0.1,
-            opacity: 0.5,
+            settings: PointsShaderSettings {
+                point_size: 0.1,
+                opacity: 0.5,
+                ..Default::default()
+            },
             perspective: true,
             alpha_mode: AlphaMode::Blend,
             ..Default::default()
@@ -69,8 +75,11 @@ fn setup(
             .into(),
         ),
         material: materials.add(PointsMaterial {
-            point_size: 20.0,
-            opacity: 1.,
+            settings: PointsShaderSettings {
+                point_size: 20.,
+                opacity: 1.,
+                ..Default::default()
+            },
             perspective: false,
             circle: true,
             ..Default::default()
