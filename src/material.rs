@@ -1,21 +1,35 @@
 use bevy::{
+    pbr::{MAX_CASCADES_PER_LIGHT, MAX_DIRECTIONAL_LIGHTS},
     prelude::{AlphaMode, Color, Material, Mesh},
     reflect::TypeUuid,
-    render::render_resource::AsBindGroup,
+    render::render_resource::{AsBindGroup, ShaderDefVal, ShaderType},
 };
 
 use crate::SHADER_HANDLE;
 
-#[derive(AsBindGroup, TypeUuid, Clone, Copy)]
+#[derive(Debug, Clone, Copy, ShaderType)]
+pub struct PointsShaderSettings {
+    pub point_size: f32,
+    pub opacity: f32,
+    pub color: Color,
+}
+
+impl Default for PointsShaderSettings {
+    fn default() -> Self {
+        Self {
+            point_size: 1.,
+            opacity: 1.,
+            color: Default::default(),
+        }
+    }
+}
+
+#[derive(AsBindGroup, TypeUuid, Debug, Clone, Copy)]
 #[uuid = "68d7b336-1a4e-4c27-aee4-27c3d2102723"]
 #[bind_group_data(PointsMaterialKey)]
 pub struct PointsMaterial {
     #[uniform(0)]
-    pub point_size: f32,
-    #[uniform(0)]
-    pub opacity: f32,
-    #[uniform(0)]
-    pub color: Color,
+    pub settings: PointsShaderSettings,
     pub depth_bias: f32,
     pub alpha_mode: AlphaMode,
     pub use_vertex_color: bool,
@@ -26,9 +40,7 @@ pub struct PointsMaterial {
 impl Default for PointsMaterial {
     fn default() -> Self {
         Self {
-            point_size: 1.,
-            opacity: 1.,
-            color: Color::WHITE,
+            settings: PointsShaderSettings::default(),
             depth_bias: 0.,
             alpha_mode: Default::default(),
             use_vertex_color: true,
@@ -86,15 +98,25 @@ impl Material for PointsMaterial {
             Mesh::ATTRIBUTE_UV_0.at_shader_location(1),
         ];
 
+        // CAUTION: To fix compilation errors in WGSL, the definitions of lights need to be resolved.
+        shader_defs.push(ShaderDefVal::UInt(
+            "MAX_DIRECTIONAL_LIGHTS".to_string(),
+            MAX_DIRECTIONAL_LIGHTS as u32,
+        ));
+        shader_defs.push(ShaderDefVal::UInt(
+            "MAX_CASCADES_PER_LIGHT".to_string(),
+            MAX_CASCADES_PER_LIGHT as u32,
+        ));
+
         if key.bind_group_data.use_vertex_color && layout.contains(Mesh::ATTRIBUTE_COLOR) {
-            shader_defs.push(String::from("VERTEX_COLORS"));
+            shader_defs.push(ShaderDefVal::from("VERTEX_COLORS"));
             vertex_attributes.push(Mesh::ATTRIBUTE_COLOR.at_shader_location(2));
         }
         if key.bind_group_data.perspective {
-            shader_defs.push(String::from("POINT_SIZE_PERSPECTIVE"));
+            shader_defs.push(ShaderDefVal::from("POINT_SIZE_PERSPECTIVE"));
         }
         if key.bind_group_data.circle {
-            shader_defs.push(String::from("POINT_SHAPE_CIRCLE"));
+            shader_defs.push(ShaderDefVal::from("POINT_SHAPE_CIRCLE"));
         }
 
         let vertex_layout = layout.get_layout(&vertex_attributes)?;
