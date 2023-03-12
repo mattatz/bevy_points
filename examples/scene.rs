@@ -20,15 +20,6 @@ fn setup(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<PointsMaterial>>,
 ) {
-    commands.spawn(PointLightBundle {
-        point_light: PointLight {
-            intensity: 3000.0,
-            ..Default::default()
-        },
-        transform: Transform::from_xyz(-3.0, 2.0, -1.0),
-        ..Default::default()
-    });
-
     let mut pt = PointsMesh::from(Mesh::from(shape::UVSphere {
         radius: 1.0,
         sectors: 36,
