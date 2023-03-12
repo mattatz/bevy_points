@@ -43,7 +43,10 @@ fn setup(
             .into(),
         ),
         material: materials.add(PointsMaterial {
-            point_size: 20.0,       // Defines the size of the points. 
+            settings: PointsShaderSettings {
+                point_size: 20.,    // Defines the size of the points. 
+                ..Default::default()
+            },
             perspective: true,      // Specify whether points' size is attenuated by the camera depth. 
             circle: true,           // Specify whether the shape of points is circular or rectangular.
             ..Default::default()
@@ -58,8 +61,11 @@ fn setup(
             .into()
         ),
         material: materials.add(PointsMaterial {
-            color: Color::BLUE,
-            opacity: 0.5,
+            settings: PointsShaderSettings {
+                color: Color::BLUE,
+                opacity: 0.5,
+                ..Default::default()
+            },
             alpha_mode: AlphaMode::Blend,
             ..Default::default()
         }),
