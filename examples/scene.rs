@@ -7,10 +7,9 @@ const ORIGIN: Vec3 = Vec3::new(0.0, 0.0, -5.0);
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins)
-        .add_plugin(PointsPlugin)
+        .add_plugins((DefaultPlugins, PointsPlugin))
         .insert_resource(ClearColor(Color::rgb(0.01, 0.02, 0.08)))
-        .add_startup_system(setup)
+        .add_systems(Startup, setup)
         // .add_system(animate)
         .run();
 }

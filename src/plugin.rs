@@ -9,8 +9,8 @@ impl Plugin for PointsPlugin {
         let mut shaders = app.world.get_resource_mut::<Assets<Shader>>().unwrap();
         shaders.set_untracked(
             SHADER_HANDLE,
-            Shader::from_wgsl(include_str!("./shaders/points.wgsl")),
+            Shader::from_wgsl(include_str!("./shaders/points.wgsl"), String::new()),
         );
-        app.add_plugin(MaterialPlugin::<PointsMaterial>::default());
+        app.add_plugins(MaterialPlugin::<PointsMaterial>::default());
     }
 }

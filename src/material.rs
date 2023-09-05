@@ -2,6 +2,7 @@ use bevy::{
     pbr::{MAX_CASCADES_PER_LIGHT, MAX_DIRECTIONAL_LIGHTS},
     prelude::{AlphaMode, Color, Material, Mesh},
     reflect::TypeUuid,
+    reflect::TypePath,
     render::render_resource::{AsBindGroup, ShaderDefVal, ShaderType},
 };
 
@@ -24,7 +25,7 @@ impl Default for PointsShaderSettings {
     }
 }
 
-#[derive(AsBindGroup, TypeUuid, Debug, Clone, Copy)]
+#[derive(AsBindGroup, TypeUuid, Debug, Clone, Copy, TypePath)]
 #[uuid = "68d7b336-1a4e-4c27-aee4-27c3d2102723"]
 #[bind_group_data(PointsMaterialKey)]
 pub struct PointsMaterial {
