@@ -1,4 +1,4 @@
-use bevy::prelude::{Assets, MaterialPlugin, Plugin, Shader};
+use bevy::{prelude::{MaterialPlugin, Plugin, Shader,}, asset::load_internal_asset};
 
 use crate::{prelude::PointsMaterial, SHADER_HANDLE};
 
@@ -6,11 +6,7 @@ pub struct PointsPlugin;
 
 impl Plugin for PointsPlugin {
     fn build(&self, app: &mut bevy::prelude::App) {
-        let mut shaders = app.world.get_resource_mut::<Assets<Shader>>().unwrap();
-        shaders.set_untracked(
-            SHADER_HANDLE,
-            Shader::from_wgsl(include_str!("./shaders/points.wgsl"), String::new()),
-        );
+        load_internal_asset!(app, SHADER_HANDLE, "./shaders/points.wgsl", Shader::from_wgsl);
         app.add_plugins(MaterialPlugin::<PointsMaterial>::default());
     }
 }

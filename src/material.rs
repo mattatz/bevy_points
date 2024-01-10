@@ -3,7 +3,7 @@ use bevy::{
     prelude::{AlphaMode, Color, Material, Mesh},
     reflect::TypeUuid,
     reflect::TypePath,
-    render::render_resource::{AsBindGroup, ShaderDefVal, ShaderType},
+    render::render_resource::{AsBindGroup, ShaderDefVal, ShaderType}, asset::Asset,
 };
 
 use crate::SHADER_HANDLE;
@@ -25,7 +25,7 @@ impl Default for PointsShaderSettings {
     }
 }
 
-#[derive(AsBindGroup, TypeUuid, Debug, Clone, Copy, TypePath)]
+#[derive(AsBindGroup, TypeUuid, Debug, Clone, Copy, TypePath, Asset)]
 #[uuid = "68d7b336-1a4e-4c27-aee4-27c3d2102723"]
 #[bind_group_data(PointsMaterialKey)]
 pub struct PointsMaterial {
@@ -70,11 +70,11 @@ impl From<&PointsMaterial> for PointsMaterialKey {
 
 impl Material for PointsMaterial {
     fn vertex_shader() -> bevy::render::render_resource::ShaderRef {
-        bevy::render::render_resource::ShaderRef::Handle(SHADER_HANDLE.typed())
+        bevy::render::render_resource::ShaderRef::Handle(SHADER_HANDLE.clone())
     }
 
     fn fragment_shader() -> bevy::render::render_resource::ShaderRef {
-        bevy::render::render_resource::ShaderRef::Handle(SHADER_HANDLE.typed())
+        bevy::render::render_resource::ShaderRef::Handle(SHADER_HANDLE.clone())
     }
 
     fn alpha_mode(&self) -> bevy::prelude::AlphaMode {

@@ -1,5 +1,6 @@
-#import bevy_pbr::mesh_view_bindings view
-#import bevy_pbr::mesh_bindings mesh
+#import bevy_pbr::mesh_view_bindings::view
+#import bevy_pbr::mesh_bindings::mesh
+#import bevy_pbr::mesh_functions::{get_model_matrix, mesh_position_local_to_world, mesh_position_local_to_clip}
 
 struct PointMaterial {
     point_size: f32,
@@ -10,11 +11,8 @@ struct PointMaterial {
 @group(1) @binding(0)
 var<uniform> material: PointMaterial;
 
-fn mesh_position_local_to_world(model: mat4x4<f32>, vertex_position: vec4<f32>) -> vec4<f32> {
-    return model * vertex_position;
-}
-
 struct Vertex {
+    @builtin(instance_index) instance_index: u32,
     @location(0) position: vec3<f32>,
     @location(1) uv: vec2<f32>,
 #ifdef VERTEX_COLORS
@@ -35,7 +33,7 @@ fn vertex(vertex: Vertex) -> VertexOutput {
     var out: VertexOutput;
     let uv = vertex.uv;
     let delta: vec2<f32> = (uv - vec2<f32>(0.5, 0.5)) * material.point_size;
-    let world = mesh_position_local_to_world(mesh.model, vec4<f32>(vertex.position, 1.0));
+    let world = mesh_position_local_to_world(get_model_matrix(vertex.instance_index), vec4<f32>(vertex.position, 1.0));
 #ifdef POINT_SIZE_PERSPECTIVE
     var view_position: vec4<f32> = view.inverse_view * world;
     view_position = vec4<f32>(view_position.xy - delta.xy, view_position.zw);
