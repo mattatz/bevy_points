@@ -1,7 +1,4 @@
-use bevy::{
-    prelude::{HandleUntyped, Shader},
-    reflect::TypeUuid,
-};
+use bevy::prelude::{Handle, Shader};
 
 pub mod material;
 pub mod mesh;
@@ -13,5 +10,5 @@ pub mod prelude {
     pub use crate::plugin::PointsPlugin;
 }
 
-pub const SHADER_HANDLE: HandleUntyped =
-    HandleUntyped::weak_from_u64(Shader::TYPE_UUID, 15532858032624716725);
+pub const SHADER_HANDLE: Handle<Shader> =
+    Handle::weak_from_u128(15532858032624716725);
