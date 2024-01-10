@@ -1,9 +1,10 @@
 use bevy::{
+    asset::Asset,
     pbr::{MAX_CASCADES_PER_LIGHT, MAX_DIRECTIONAL_LIGHTS},
     prelude::{AlphaMode, Color, Material, Mesh},
-    reflect::TypeUuid,
     reflect::TypePath,
-    render::render_resource::{AsBindGroup, ShaderDefVal, ShaderType}, asset::Asset,
+    reflect::TypeUuid,
+    render::render_resource::{AsBindGroup, ShaderDefVal, ShaderType},
 };
 
 use crate::SHADER_HANDLE;
