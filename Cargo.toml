@@ -16,12 +16,12 @@ version = "0.4.0"
 [dependencies.bevy]
 default-features = false
 features = ["bevy_render", "bevy_pbr", "bevy_asset", "tonemapping_luts"]
-version = "0.12.1"
+version = "0.13.0"
 
 [dev-dependencies.bevy]
 default-features = false
 features = ["bevy_render", "bevy_pbr", "bevy_core_pipeline", "bevy_asset"]
-version = "0.12.1"
+version = "0.13.0"
 
 [features]
 "examples" = ["bevy/bevy_render", "bevy/bevy_pbr", "bevy/bevy_core_pipeline", "bevy/bevy_winit", "bevy/x11"]

@@ -37,7 +37,7 @@ fn setup(
     );
 
     commands.spawn(MaterialMeshBundle {
-        mesh: meshes.add(pt.into()),
+        mesh: meshes.add(Mesh::from(pt)),
         material: materials.add(PointsMaterial {
             settings: PointsShaderSettings {
                 point_size: 0.1,
@@ -57,12 +57,12 @@ fn setup(
     let h = 3.0;
     commands.spawn(MaterialMeshBundle {
         mesh: meshes.add(
-            PointsMesh::from_iter((0..n).map(|i| {
+            Mesh::from(            
+                PointsMesh::from_iter((0..n).map(|i| {
                 let t01 = (i as f32) / ((n - 1) as f32);
                 let r = t01 * TAU * 4.0;
                 Vec3::new(r.cos(), (t01 - 0.5) * h, r.sin())
-            }))
-            .into(),
+            })))
         ),
         material: materials.add(PointsMaterial {
             settings: PointsShaderSettings {

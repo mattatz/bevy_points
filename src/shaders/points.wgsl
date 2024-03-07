@@ -2,16 +2,17 @@
 #import bevy_pbr::mesh_bindings::mesh
 #import bevy_pbr::mesh_functions::{get_model_matrix, mesh_position_local_to_world, mesh_position_local_to_clip}
 
+
 struct PointMaterial {
     point_size: f32,
     opacity: f32,
     color: vec4<f32>,
 };
 
-@group(1) @binding(0)
+@group(2) @binding(0)
 var<uniform> material: PointMaterial;
 
-struct Vertex {
+struct VertexInput {
     @builtin(instance_index) instance_index: u32,
     @location(0) position: vec3<f32>,
     @location(1) uv: vec2<f32>,
@@ -29,7 +30,7 @@ struct VertexOutput {
 };
 
 @vertex
-fn vertex(vertex: Vertex) -> VertexOutput {
+fn vertex(vertex: VertexInput) -> VertexOutput {
     var out: VertexOutput;
     let uv = vertex.uv;
     let delta: vec2<f32> = (uv - vec2<f32>(0.5, 0.5)) * material.point_size;
