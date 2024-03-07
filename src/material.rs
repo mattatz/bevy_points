@@ -1,6 +1,6 @@
 use bevy::{
     asset::Asset,
-    pbr::{MAX_CASCADES_PER_LIGHT, MAX_DIRECTIONAL_LIGHTS},
+    // pbr::{MAX_CASCADES_PER_LIGHT, MAX_DIRECTIONAL_LIGHTS},
     prelude::{AlphaMode, Color, Material, Mesh},
     reflect::TypePath,
     // reflect::TypeUuid,
@@ -37,6 +37,7 @@ pub struct PointsMaterial {
     pub use_vertex_color: bool,
     pub perspective: bool,
     pub circle: bool,
+    pub corss: bool,
 }
 
 impl Default for PointsMaterial {
@@ -48,6 +49,7 @@ impl Default for PointsMaterial {
             use_vertex_color: true,
             perspective: true,
             circle: false,
+            corss: false
         }
     }
 }
@@ -57,6 +59,7 @@ pub struct PointsMaterialKey {
     use_vertex_color: bool,
     perspective: bool,
     circle: bool,
+    corss: bool
 }
 
 impl From<&PointsMaterial> for PointsMaterialKey {
@@ -65,6 +68,7 @@ impl From<&PointsMaterial> for PointsMaterialKey {
             use_vertex_color: material.use_vertex_color,
             perspective: material.perspective,
             circle: material.circle,
+            corss: material.corss
         }
     }
 }
@@ -119,6 +123,9 @@ impl Material for PointsMaterial {
         }
         if key.bind_group_data.circle {
             shader_defs.push(ShaderDefVal::from("POINT_SHAPE_CIRCLE"));
+        }
+        if key.bind_group_data.corss {
+            shader_defs.push(ShaderDefVal::from("POINT_SHAPE_CORSS"));
         }
 
         let vertex_layout = layout.get_layout(&vertex_attributes)?;

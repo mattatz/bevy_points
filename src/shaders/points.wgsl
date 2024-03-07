@@ -33,7 +33,7 @@ struct VertexOutput {
 fn vertex(vertex: VertexInput) -> VertexOutput {
     var out: VertexOutput;
     let uv = vertex.uv;
-    let delta: vec2<f32> = (uv - vec2<f32>(0.5, 0.5)) * material.point_size;
+    let delta: vec2<f32> = (uv - vec2<f32>(0.5, 0.5)) *  material.point_size;
     let world = mesh_position_local_to_world(get_model_matrix(vertex.instance_index), vec4<f32>(vertex.position, 1.0));
 #ifdef POINT_SIZE_PERSPECTIVE
     var view_position: vec4<f32> = view.inverse_view * world;
@@ -66,6 +66,18 @@ fn fragment(input: FragmentInput) -> @location(0) vec4<f32> {
 #ifdef POINT_SHAPE_CIRCLE
     let d: f32 = distance(input.uv, vec2<f32>(0.5, 0.5));
     if d > 0.5 {
+        discard;
+    }
+#endif
+#ifdef POINT_SHAPE_CORSS
+    var d1: i32 = 0;
+    if(input.uv.y - input.uv.x + 0.05 < 0 || input.uv.y - input.uv.x - 0.05 > 0){
+        d1 = d1 + 1;
+    }
+    if(input.uv.y + input.uv.x - 0.95 < 0 || input.uv.y + input.uv.x - 1.05 > 0){
+        d1 = d1 +  1;
+    }
+    if(d1 == 2){
         discard;
     }
 #endif

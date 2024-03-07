@@ -46,6 +46,8 @@ fn setup(
             },
             perspective: true,
             alpha_mode: AlphaMode::Blend,
+            circle: false,
+            corss: false,
             ..Default::default()
         }),
         transform: Transform::from_translation(Vec3::NEG_X * 1.25)
@@ -66,7 +68,7 @@ fn setup(
         ),
         material: materials.add(PointsMaterial {
             settings: PointsShaderSettings {
-                point_size: 20.,
+                point_size: 1.,
                 opacity: 1.,
                 ..Default::default()
             },
