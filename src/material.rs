@@ -1,9 +1,9 @@
 use bevy::{
     asset::Asset,
-    pbr::{MAX_CASCADES_PER_LIGHT, MAX_DIRECTIONAL_LIGHTS},
+    // pbr::{MAX_CASCADES_PER_LIGHT, MAX_DIRECTIONAL_LIGHTS},
     prelude::{AlphaMode, Color, Material, Mesh},
     reflect::TypePath,
-    reflect::TypeUuid,
+    // reflect::TypeUuid,
     render::render_resource::{AsBindGroup, ShaderDefVal, ShaderType},
 };
 
@@ -26,8 +26,8 @@ impl Default for PointsShaderSettings {
     }
 }
 
-#[derive(AsBindGroup, TypeUuid, Debug, Clone, Copy, TypePath, Asset)]
-#[uuid = "68d7b336-1a4e-4c27-aee4-27c3d2102723"]
+#[derive(AsBindGroup, Debug, Clone, Asset, Copy, TypePath )]
+// #[uuid = "68d7b336-1a4e-4c27-aee4-27c3d2102723"]
 #[bind_group_data(PointsMaterialKey)]
 pub struct PointsMaterial {
     #[uniform(0)]
@@ -37,6 +37,7 @@ pub struct PointsMaterial {
     pub use_vertex_color: bool,
     pub perspective: bool,
     pub circle: bool,
+    pub corss: bool,
 }
 
 impl Default for PointsMaterial {
@@ -48,6 +49,7 @@ impl Default for PointsMaterial {
             use_vertex_color: true,
             perspective: true,
             circle: false,
+            corss: false
         }
     }
 }
@@ -57,6 +59,7 @@ pub struct PointsMaterialKey {
     use_vertex_color: bool,
     perspective: bool,
     circle: bool,
+    corss: bool
 }
 
 impl From<&PointsMaterial> for PointsMaterialKey {
@@ -65,6 +68,7 @@ impl From<&PointsMaterial> for PointsMaterialKey {
             use_vertex_color: material.use_vertex_color,
             perspective: material.perspective,
             circle: material.circle,
+            corss: material.corss
         }
     }
 }
@@ -101,14 +105,14 @@ impl Material for PointsMaterial {
         ];
 
         // CAUTION: To fix compilation errors in WGSL, the definitions of lights need to be resolved.
-        shader_defs.push(ShaderDefVal::UInt(
-            "MAX_DIRECTIONAL_LIGHTS".to_string(),
-            MAX_DIRECTIONAL_LIGHTS as u32,
-        ));
-        shader_defs.push(ShaderDefVal::UInt(
-            "MAX_CASCADES_PER_LIGHT".to_string(),
-            MAX_CASCADES_PER_LIGHT as u32,
-        ));
+        // shader_defs.push(ShaderDefVal::UInt(
+        //     "MAX_DIRECTIONAL_LIGHTS".to_string(),
+        //     MAX_DIRECTIONAL_LIGHTS as u32,
+        // ));
+        // shader_defs.push(ShaderDefVal::UInt(
+        //     "MAX_CASCADES_PER_LIGHT".to_string(),
+        //     MAX_CASCADES_PER_LIGHT as u32,
+        // ));
 
         if key.bind_group_data.use_vertex_color && layout.contains(Mesh::ATTRIBUTE_COLOR) {
             shader_defs.push(ShaderDefVal::from("VERTEX_COLORS"));
@@ -119,6 +123,9 @@ impl Material for PointsMaterial {
         }
         if key.bind_group_data.circle {
             shader_defs.push(ShaderDefVal::from("POINT_SHAPE_CIRCLE"));
+        }
+        if key.bind_group_data.corss {
+            shader_defs.push(ShaderDefVal::from("POINT_SHAPE_CORSS"));
         }
 
         let vertex_layout = layout.get_layout(&vertex_attributes)?;
