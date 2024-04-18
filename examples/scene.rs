@@ -19,25 +19,20 @@ fn setup(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<PointsMaterial>>,
 ) {
-    let mut pt = PointsMesh::from(Mesh::from(shape::UVSphere {
-        radius: 1.0,
-        sectors: 36,
-        stacks: 18,
-    }));
+    let mut pt = PointsMesh::from(Mesh::from(Sphere { radius: 1.0 }));
     let n = pt.vertices.len() as f32;
     pt.colors = Some(
         pt.vertices
             .iter()
-            .enumerate()
-            .map(|(i, _)| {
-                let t = (i as f32) / (n - 1.) * 360.;
-                Color::hsl(t, 1., 0.5)
+            .map(|p| {
+                let n = (p.normalize() + 1.0) * 0.5;
+                Color::rgb_from_array(n.to_array())
             })
             .collect(),
     );
 
     commands.spawn(MaterialMeshBundle {
-        mesh: meshes.add(pt.into()),
+        mesh: meshes.add(pt),
         material: materials.add(PointsMaterial {
             settings: PointsShaderSettings {
                 point_size: 0.1,
@@ -56,14 +51,11 @@ fn setup(
     let n = 320;
     let h = 3.0;
     commands.spawn(MaterialMeshBundle {
-        mesh: meshes.add(
-            PointsMesh::from_iter((0..n).map(|i| {
-                let t01 = (i as f32) / ((n - 1) as f32);
-                let r = t01 * TAU * 4.0;
-                Vec3::new(r.cos(), (t01 - 0.5) * h, r.sin())
-            }))
-            .into(),
-        ),
+        mesh: meshes.add(PointsMesh::from_iter((0..n).map(|i| {
+            let t01 = (i as f32) / ((n - 1) as f32);
+            let r = t01 * TAU * 4.0;
+            Vec3::new(r.cos(), (t01 - 0.5) * h, r.sin())
+        }))),
         material: materials.add(PointsMaterial {
             settings: PointsShaderSettings {
                 point_size: 20.,
