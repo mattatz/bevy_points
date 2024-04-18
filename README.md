@@ -5,7 +5,7 @@
 
 Points mesh plugin for Bevy.
 
-![Example](https://user-images.githubusercontent.com/1085910/202979410-3bc4bf60-b4af-421c-b2ab-6ac08e00f6a6.png)
+![Example](https://github.com/mattatz/bevy_points/assets/1085910/9bbf57b4-38b6-45ea-8b99-10ae004974e5)
 
 ## Usage
 
@@ -39,8 +39,7 @@ fn setup(
                 let t01 = (i as f32) / ((n - 1) as f32);
                 let r = t01 * TAU * 4.0; // spiral fineness
                 Vec3::new(r.cos(), (t01 - 0.5) * h, r.sin())
-            }))
-            .into(),
+            })),
         ),
         material: materials.add(PointsMaterial {
             settings: PointsShaderSettings {
@@ -58,7 +57,6 @@ fn setup(
         mesh: meshes.add(
             // Mesh can be converted to PointsMesh.
             PointsMesh::from(Mesh::from(shape::Icosphere::default()))
-            .into()
         ),
         material: materials.add(PointsMaterial {
             settings: PointsShaderSettings {
@@ -83,3 +81,4 @@ fn setup(
 | 0.10 | 0.2           |
 | 0.11 | 0.3           |
 | 0.12 | 0.4           |
+| 0.13 | 0.5           |

@@ -2,6 +2,7 @@ use bevy::{
     prelude::{Color, Mesh, Vec3},
     render::{
         mesh::{Indices, VertexAttributeValues},
+        render_asset::RenderAssetUsages,
         render_resource::PrimitiveTopology,
     },
 };
@@ -31,7 +32,12 @@ impl From<Mesh> for PointsMesh {
             if let Some(VertexAttributeValues::Float32x4(array)) =
                 m.attribute(Mesh::ATTRIBUTE_COLOR)
             {
-                p.colors = Some(array.iter().map(|item| Color::from(*item)).collect());
+                p.colors = Some(
+                    array
+                        .iter()
+                        .map(|item| Color::rgba_from_array(*item))
+                        .collect(),
+                );
             }
             return p;
         }
@@ -61,7 +67,10 @@ impl From<PointsMesh> for Mesh {
                 })
                 .collect(),
         );
-        let mut mesh = Mesh::new(PrimitiveTopology::TriangleList);
+        let mut mesh = Mesh::new(
+            PrimitiveTopology::TriangleList,
+            RenderAssetUsages::default(),
+        );
         mesh.insert_attribute(Mesh::ATTRIBUTE_POSITION, vertices);
         mesh.insert_attribute(Mesh::ATTRIBUTE_UV_0, uvs);
         if let Some(color) = m.colors {
@@ -76,7 +85,7 @@ impl From<PointsMesh> for Mesh {
                     .collect::<Vec<[f32; 4]>>(),
             );
         }
-        mesh.set_indices(Some(indices));
+        mesh.insert_indices(indices);
         mesh
     }
 }
