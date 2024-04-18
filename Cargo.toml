@@ -11,20 +11,15 @@ license = "MIT"
 name = "bevy_points"
 readme = "README.md"
 repository = "https://github.com/mattatz/bevy_points"
-version = "0.5.1"
+version = "0.5.2"
 
 [dependencies.bevy]
 default-features = false
 features = ["bevy_render", "bevy_pbr", "bevy_asset", "tonemapping_luts"]
 version = "0.13.2"
 
-[dev-dependencies.bevy]
-default-features = false
-features = ["bevy_render", "bevy_pbr", "bevy_core_pipeline", "bevy_asset"]
-version = "0.13.2"
-
 [features]
-"examples" = ["bevy/bevy_render", "bevy/bevy_pbr", "bevy/bevy_core_pipeline", "bevy/bevy_winit", "bevy/x11"]
+"examples" = ["bevy/bevy_core_pipeline", "bevy/bevy_winit", "bevy/x11"]
 
 [[example]]
 name = "scene"
