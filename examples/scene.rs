@@ -10,7 +10,6 @@ fn main() {
         .add_plugins((DefaultPlugins, PointsPlugin))
         .insert_resource(ClearColor(Color::rgb(0.01, 0.02, 0.08)))
         .add_systems(Startup, setup)
-        // .add_system(animate)
         .run();
 }
 
@@ -20,7 +19,6 @@ fn setup(
     mut materials: ResMut<Assets<PointsMaterial>>,
 ) {
     let mut pt = PointsMesh::from(Mesh::from(Sphere { radius: 1.0 }));
-    let n = pt.vertices.len() as f32;
     pt.colors = Some(
         pt.vertices
             .iter()
@@ -82,15 +80,3 @@ fn setup(
         ..Default::default()
     });
 }
-
-/*
-fn animate(time: Res<Time>, mut camera: Query<&mut Transform, With<Camera>>) {
-    if let Ok(mut transform) = camera.get_single_mut() {
-        let t = time.elapsed_seconds() * 0.5;
-        let o = Vec3::ZERO;
-        let p = ORIGIN;
-        let d = (p - o).normalize() * t.cos() * 3.;
-        transform.translation = p + d;
-    }
-}
-*/

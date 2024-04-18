@@ -55,8 +55,10 @@ fn setup(
 
     commands.spawn(MaterialMeshBundle {
         mesh: meshes.add(
-            // Mesh can be converted to PointsMesh.
-            PointsMesh::from(Mesh::from(shape::Icosphere::default()))
+            // Mesh can be converted to PointsMesh & vice versa.
+            PointsMesh::from(Mesh::from(Sphere {
+                radius: 1.0
+            }))
         ),
         material: materials.add(PointsMaterial {
             settings: PointsShaderSettings {
