@@ -1,18 +1,15 @@
 use bevy::{
-    asset::Asset,
-    pbr::{MAX_CASCADES_PER_LIGHT, MAX_DIRECTIONAL_LIGHTS},
-    prelude::{AlphaMode, Color, Material, Mesh},
-    reflect::TypePath,
-    render::render_resource::{AsBindGroup, ShaderDefVal, ShaderType},
+    asset::Asset, color::LinearRgba, pbr::{MAX_CASCADES_PER_LIGHT, MAX_DIRECTIONAL_LIGHTS}, prelude::{AlphaMode, 
+         Material, Mesh}, reflect::TypePath, render::render_resource::{AsBindGroup, ShaderDefVal, ShaderType}
 };
 
 use crate::SHADER_HANDLE;
 
-#[derive(Debug, Clone, Copy, ShaderType)]
+#[derive(Debug, Clone, Copy, ShaderType)] // ShaderType
 pub struct PointsShaderSettings {
     pub point_size: f32,
     pub opacity: f32,
-    pub color: Color,
+    pub color: LinearRgba,
 }
 
 impl Default for PointsShaderSettings {
@@ -87,7 +84,7 @@ impl Material for PointsMaterial {
     fn specialize(
         _pipeline: &bevy::pbr::MaterialPipeline<Self>,
         descriptor: &mut bevy::render::render_resource::RenderPipelineDescriptor,
-        layout: &bevy::render::mesh::MeshVertexBufferLayout,
+        layout: &bevy::render::mesh::MeshVertexBufferLayoutRef,
         key: bevy::pbr::MaterialPipelineKey<Self>,
     ) -> Result<(), bevy::render::render_resource::SpecializedMeshPipelineError> {
         descriptor.primitive.cull_mode = None;
@@ -108,7 +105,7 @@ impl Material for PointsMaterial {
             MAX_CASCADES_PER_LIGHT as u32,
         ));
 
-        if key.bind_group_data.use_vertex_color && layout.contains(Mesh::ATTRIBUTE_COLOR) {
+        if key.bind_group_data.use_vertex_color && layout.0.contains(Mesh::ATTRIBUTE_COLOR) {
             shader_defs.push(ShaderDefVal::from("VERTEX_COLORS"));
             vertex_attributes.push(Mesh::ATTRIBUTE_COLOR.at_shader_location(2));
         }
@@ -119,7 +116,7 @@ impl Material for PointsMaterial {
             shader_defs.push(ShaderDefVal::from("POINT_SHAPE_CIRCLE"));
         }
 
-        let vertex_layout = layout.get_layout(&vertex_attributes)?;
+        let vertex_layout = layout.0.get_layout(&vertex_attributes)?;
         descriptor.vertex.buffers = vec![vertex_layout];
         descriptor.vertex.shader_defs = shader_defs.clone();
         if let Some(fragment) = &mut descriptor.fragment {

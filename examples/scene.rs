@@ -8,7 +8,7 @@ const ORIGIN: Vec3 = Vec3::new(0.0, 0.0, -5.0);
 fn main() {
     App::new()
         .add_plugins((DefaultPlugins, PointsPlugin))
-        .insert_resource(ClearColor(Color::rgb(0.01, 0.02, 0.08)))
+        .insert_resource(ClearColor(Color::srgb(0.01, 0.02, 0.08)))
         .add_systems(Startup, setup)
         .run();
 }
@@ -24,7 +24,7 @@ fn setup(
             .iter()
             .map(|p| {
                 let n = (p.normalize() + 1.0) * 0.5;
-                Color::rgb_from_array(n.to_array())
+                Color::srgb_from_array(n.to_array())
             })
             .collect(),
     );

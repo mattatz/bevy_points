@@ -1,10 +1,9 @@
 use bevy::{
-    prelude::{Color, Mesh, Vec3},
-    render::{
+    color::{ColorToComponents, Srgba}, prelude::{Color, Mesh, Vec3}, render::{
         mesh::{Indices, VertexAttributeValues},
         render_asset::RenderAssetUsages,
         render_resource::PrimitiveTopology,
-    },
+    }
 };
 
 #[derive(Default)]
@@ -35,7 +34,8 @@ impl From<Mesh> for PointsMesh {
                 p.colors = Some(
                     array
                         .iter()
-                        .map(|item| Color::rgba_from_array(*item))
+                        .map(|item| 
+                            Srgba::from_f32_array(*item).into())
                         .collect(),
                 );
             }
@@ -79,7 +79,7 @@ impl From<PointsMesh> for Mesh {
                 color
                     .iter()
                     .flat_map(|c| {
-                        let arr = c.as_rgba_f32();
+                        let arr = c.to_srgba().to_f32_array();
                         [arr, arr, arr, arr]
                     })
                     .collect::<Vec<[f32; 4]>>(),
