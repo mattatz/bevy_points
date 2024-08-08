@@ -1,9 +1,11 @@
 use bevy::{
-    color::{ColorToComponents, Srgba}, prelude::{Color, Mesh, Vec3}, render::{
+    color::{ColorToComponents, Srgba},
+    prelude::{Color, Mesh, Vec3},
+    render::{
         mesh::{Indices, VertexAttributeValues},
         render_asset::RenderAssetUsages,
         render_resource::PrimitiveTopology,
-    }
+    },
 };
 
 #[derive(Default)]
@@ -34,8 +36,7 @@ impl From<Mesh> for PointsMesh {
                 p.colors = Some(
                     array
                         .iter()
-                        .map(|item| 
-                            Srgba::from_f32_array(*item).into())
+                        .map(|item| Srgba::from_f32_array(*item).into())
                         .collect(),
                 );
             }

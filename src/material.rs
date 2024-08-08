@@ -1,6 +1,10 @@
 use bevy::{
-    asset::Asset, color::LinearRgba, pbr::{MAX_CASCADES_PER_LIGHT, MAX_DIRECTIONAL_LIGHTS}, prelude::{AlphaMode, 
-         Material, Mesh}, reflect::TypePath, render::render_resource::{AsBindGroup, ShaderDefVal, ShaderType}
+    asset::Asset,
+    color::LinearRgba,
+    pbr::{MAX_CASCADES_PER_LIGHT, MAX_DIRECTIONAL_LIGHTS},
+    prelude::{AlphaMode, Material, Mesh},
+    reflect::TypePath,
+    render::render_resource::{AsBindGroup, ShaderDefVal, ShaderType},
 };
 
 use crate::SHADER_HANDLE;
