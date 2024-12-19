@@ -29,9 +29,9 @@ fn setup(
             .collect(),
     );
 
-    commands.spawn(MaterialMeshBundle {
-        mesh: meshes.add(pt),
-        material: materials.add(PointsMaterial {
+    commands.spawn((
+        Mesh3d(meshes.add(pt)),
+        MeshMaterial3d(materials.add(PointsMaterial {
             settings: PointsShaderSettings {
                 point_size: 0.1,
                 opacity: 0.5,
@@ -40,21 +40,20 @@ fn setup(
             perspective: true,
             alpha_mode: AlphaMode::Blend,
             ..Default::default()
-        }),
-        transform: Transform::from_translation(Vec3::NEG_X * 1.25)
+        })),
+        Transform::from_translation(Vec3::NEG_X * 1.25)
             .with_rotation(Quat::from_axis_angle(Vec3::ONE.normalize(), FRAC_PI_2)),
-        ..Default::default()
-    });
+    ));
 
     let n = 320;
     let h = 3.0;
-    commands.spawn(MaterialMeshBundle {
-        mesh: meshes.add(PointsMesh::from_iter((0..n).map(|i| {
+    commands.spawn((
+        Mesh3d(meshes.add(PointsMesh::from_iter((0..n).map(|i| {
             let t01 = (i as f32) / ((n - 1) as f32);
             let r = t01 * TAU * 4.0;
             Vec3::new(r.cos(), (t01 - 0.5) * h, r.sin())
-        }))),
-        material: materials.add(PointsMaterial {
+        })))),
+        MeshMaterial3d(materials.add(PointsMaterial {
             settings: PointsShaderSettings {
                 point_size: 20.,
                 opacity: 1.,
@@ -63,20 +62,18 @@ fn setup(
             perspective: false,
             circle: true,
             ..Default::default()
-        }),
-        transform: Transform::from_translation(Vec3::X * 1.25),
-        ..Default::default()
-    });
+        })),
+        Transform::from_translation(Vec3::X * 1.25),
+    ));
 
-    commands.spawn(Camera3dBundle {
-        projection: PerspectiveProjection {
+    commands.spawn((
+        Camera3d::default(),
+        Projection::Perspective(PerspectiveProjection {
             fov: 45.0,
             aspect_ratio: 1.,
             near: 0.1,
             far: 100.,
-        }
-        .into(),
-        transform: Transform::from_translation(ORIGIN).looking_at(Vec3::ZERO, Vec3::Y),
-        ..Default::default()
-    });
+        }),
+        Transform::from_translation(ORIGIN).looking_at(Vec3::ZERO, Vec3::Y),
+    ));
 }
