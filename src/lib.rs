@@ -1,4 +1,7 @@
-use bevy::prelude::{Handle, Shader};
+use bevy::{
+    asset::weak_handle,
+    prelude::{Handle, Shader},
+};
 
 pub mod material;
 pub mod mesh;
@@ -10,4 +13,4 @@ pub mod prelude {
     pub use crate::plugin::PointsPlugin;
 }
 
-pub const SHADER_HANDLE: Handle<Shader> = Handle::weak_from_u128(15532858032624716725);
+pub const SHADER_HANDLE: Handle<Shader> = weak_handle!("efbb945e-e50e-4f70-89b5-7b7ddbf1986f");
