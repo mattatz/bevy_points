@@ -1,11 +1,9 @@
-use bevy::{
-    color::{ColorToComponents, Srgba},
-    prelude::{Color, Mesh, Vec3},
-    render::{
-        mesh::{Indices, VertexAttributeValues},
-        render_asset::RenderAssetUsages,
-        render_resource::PrimitiveTopology,
-    },
+use bevy_color::{Color, ColorToComponents, Srgba};
+use bevy_math::Vec3;
+use bevy_render::{
+    mesh::{Indices, Mesh, VertexAttributeValues},
+    render_asset::RenderAssetUsages,
+    render_resource::PrimitiveTopology,
 };
 
 #[derive(Default)]

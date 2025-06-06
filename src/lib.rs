@@ -1,7 +1,5 @@
-use bevy::{
-    asset::weak_handle,
-    prelude::{Handle, Shader},
-};
+use bevy_asset::{weak_handle, Handle};
+use bevy_render::render_resource::Shader;
 
 pub mod material;
 pub mod mesh;

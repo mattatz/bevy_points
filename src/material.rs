@@ -1,10 +1,11 @@
-use bevy::{
-    asset::Asset,
-    color::LinearRgba,
-    pbr::{MAX_CASCADES_PER_LIGHT, MAX_DIRECTIONAL_LIGHTS},
-    prelude::{AlphaMode, Material, Mesh},
-    reflect::TypePath,
-    render::render_resource::{AsBindGroup, ShaderDefVal, ShaderType},
+use bevy_asset::Asset;
+use bevy_color::LinearRgba;
+use bevy_pbr::{Material, MAX_CASCADES_PER_LIGHT, MAX_DIRECTIONAL_LIGHTS};
+use bevy_reflect::TypePath;
+use bevy_render::{
+    alpha::AlphaMode,
+    mesh::Mesh,
+    render_resource::{AsBindGroup, ShaderDefVal, ShaderType},
 };
 
 use crate::SHADER_HANDLE;
@@ -69,15 +70,15 @@ impl From<&PointsMaterial> for PointsMaterialKey {
 }
 
 impl Material for PointsMaterial {
-    fn vertex_shader() -> bevy::render::render_resource::ShaderRef {
-        bevy::render::render_resource::ShaderRef::Handle(SHADER_HANDLE.clone())
+    fn vertex_shader() -> bevy_render::render_resource::ShaderRef {
+        bevy_render::render_resource::ShaderRef::Handle(SHADER_HANDLE.clone())
     }
 
-    fn fragment_shader() -> bevy::render::render_resource::ShaderRef {
-        bevy::render::render_resource::ShaderRef::Handle(SHADER_HANDLE.clone())
+    fn fragment_shader() -> bevy_render::render_resource::ShaderRef {
+        bevy_render::render_resource::ShaderRef::Handle(SHADER_HANDLE.clone())
     }
 
-    fn alpha_mode(&self) -> bevy::prelude::AlphaMode {
+    fn alpha_mode(&self) -> AlphaMode {
         self.alpha_mode
     }
 
@@ -86,11 +87,11 @@ impl Material for PointsMaterial {
     }
 
     fn specialize(
-        _pipeline: &bevy::pbr::MaterialPipeline<Self>,
-        descriptor: &mut bevy::render::render_resource::RenderPipelineDescriptor,
-        layout: &bevy::render::mesh::MeshVertexBufferLayoutRef,
-        key: bevy::pbr::MaterialPipelineKey<Self>,
-    ) -> Result<(), bevy::render::render_resource::SpecializedMeshPipelineError> {
+        _pipeline: &bevy_pbr::MaterialPipeline<Self>,
+        descriptor: &mut bevy_render::render_resource::RenderPipelineDescriptor,
+        layout: &bevy_render::mesh::MeshVertexBufferLayoutRef,
+        key: bevy_pbr::MaterialPipelineKey<Self>,
+    ) -> Result<(), bevy_render::render_resource::SpecializedMeshPipelineError> {
         descriptor.primitive.cull_mode = None;
 
         let mut shader_defs = vec![];
