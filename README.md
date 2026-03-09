@@ -19,11 +19,11 @@ use bevy_points::prelude::*;
 
 fn main() {
     App::new()
-        .add_plugin(PointsPlugin);
+        .add_plugins(PointsPlugin);
 }
 ```
 
-### Apply a component to a MaterialMeshBundle
+### Apply a material to a mesh
 
 ```rust
 fn setup(
@@ -85,3 +85,4 @@ fn setup(
 | 0.14 | 0.6           |
 | 0.15 | 0.7           |
 | 0.16 | 0.8           |
+| 0.18 | 0.10          |
