@@ -1,13 +1,11 @@
 use bevy::{
     asset::Asset,
     color::LinearRgba,
-    pbr::{MAX_CASCADES_PER_LIGHT, MAX_DIRECTIONAL_LIGHTS},
     prelude::{AlphaMode, Material, Mesh},
     reflect::TypePath,
-    render::render_resource::{AsBindGroup, ShaderDefVal, ShaderType},
+    render::render_resource::{AsBindGroup, ShaderType},
+    shader::{ShaderDefVal, ShaderRef},
 };
-
-use crate::SHADER_HANDLE;
 
 #[derive(Debug, Clone, Copy, ShaderType)] // ShaderType
 pub struct PointsShaderSettings {
@@ -69,15 +67,15 @@ impl From<&PointsMaterial> for PointsMaterialKey {
 }
 
 impl Material for PointsMaterial {
-    fn vertex_shader() -> bevy::render::render_resource::ShaderRef {
-        bevy::render::render_resource::ShaderRef::Handle(SHADER_HANDLE.clone())
+    fn vertex_shader() -> ShaderRef {
+        "embedded://bevy_points/shaders/points.wgsl".into()
     }
 
-    fn fragment_shader() -> bevy::render::render_resource::ShaderRef {
-        bevy::render::render_resource::ShaderRef::Handle(SHADER_HANDLE.clone())
+    fn fragment_shader() -> ShaderRef {
+        "embedded://bevy_points/shaders/points.wgsl".into()
     }
 
-    fn alpha_mode(&self) -> bevy::prelude::AlphaMode {
+    fn alpha_mode(&self) -> AlphaMode {
         self.alpha_mode
     }
 
@@ -86,9 +84,9 @@ impl Material for PointsMaterial {
     }
 
     fn specialize(
-        _pipeline: &bevy::pbr::MaterialPipeline<Self>,
+        _pipeline: &bevy::pbr::MaterialPipeline,
         descriptor: &mut bevy::render::render_resource::RenderPipelineDescriptor,
-        layout: &bevy::render::mesh::MeshVertexBufferLayoutRef,
+        layout: &bevy::mesh::MeshVertexBufferLayoutRef,
         key: bevy::pbr::MaterialPipelineKey<Self>,
     ) -> Result<(), bevy::render::render_resource::SpecializedMeshPipelineError> {
         descriptor.primitive.cull_mode = None;
@@ -98,16 +96,6 @@ impl Material for PointsMaterial {
             Mesh::ATTRIBUTE_POSITION.at_shader_location(0),
             Mesh::ATTRIBUTE_UV_0.at_shader_location(1),
         ];
-
-        // CAUTION: To fix compilation errors in WGSL, the definitions of lights need to be resolved.
-        shader_defs.push(ShaderDefVal::UInt(
-            "MAX_DIRECTIONAL_LIGHTS".to_string(),
-            MAX_DIRECTIONAL_LIGHTS as u32,
-        ));
-        shader_defs.push(ShaderDefVal::UInt(
-            "MAX_CASCADES_PER_LIGHT".to_string(),
-            MAX_CASCADES_PER_LIGHT as u32,
-        ));
 
         if key.bind_group_data.use_vertex_color && layout.0.contains(Mesh::ATTRIBUTE_COLOR) {
             shader_defs.push(ShaderDefVal::from("VERTEX_COLORS"));
@@ -122,9 +110,9 @@ impl Material for PointsMaterial {
 
         let vertex_layout = layout.0.get_layout(&vertex_attributes)?;
         descriptor.vertex.buffers = vec![vertex_layout];
-        descriptor.vertex.shader_defs = shader_defs.clone();
+        descriptor.vertex.shader_defs.extend(shader_defs.clone());
         if let Some(fragment) = &mut descriptor.fragment {
-            fragment.shader_defs = shader_defs;
+            fragment.shader_defs.extend(shader_defs);
         }
 
         Ok(())

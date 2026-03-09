@@ -1,11 +1,9 @@
 use bevy::{
+    asset::RenderAssetUsages,
     color::{ColorToComponents, Srgba},
+    mesh::{Indices, VertexAttributeValues},
     prelude::{Color, Mesh, Vec3},
-    render::{
-        mesh::{Indices, VertexAttributeValues},
-        render_asset::RenderAssetUsages,
-        render_resource::PrimitiveTopology,
-    },
+    render::render_resource::PrimitiveTopology,
 };
 
 #[derive(Default)]

@@ -73,6 +73,7 @@ fn setup(
             aspect_ratio: 1.,
             near: 0.1,
             far: 100.,
+            ..Default::default()
         }),
         Transform::from_translation(ORIGIN).looking_at(Vec3::ZERO, Vec3::Y),
     ));
